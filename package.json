@@ -1,17 +1,30 @@
 {
   "name": "ionic-project",
-  "version": "1.0.0",
-  "description": "An Ionic project",
-  "dependencies": {
-    "gulp": "^3.5.6",
-    "gulp-sass": "^0.7.1",
-    "gulp-concat": "^2.2.0",
-    "gulp-minify-css": "^0.3.0",
-    "gulp-rename": "^1.2.0"
-  },
+  "version": "0.0.0",
+  "description": "An Ionic starter project",
+  "dependencies": {},
   "devDependencies": {
     "bower": "^1.3.3",
+    "gulp": "^3.5.6",
+    "gulp-bower-files": "^0.2.3",
+    "gulp-clean": "^0.3.0",
+    "gulp-compass": "^1.1.9",
+    "gulp-concat": "^2.2.0",
+    "gulp-connect": "^2.0.5",
+    "gulp-filter": "^0.4.1",
+    "gulp-flatten": "0.0.2",
+    "gulp-jshint": "^1.6.1",
+    "gulp-minify-css": "^0.3.0",
+    "gulp-ngmin": "^0.3.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-rev": "^0.4.0",
+    "gulp-rev-replace": "^0.1.0",
+    "gulp-sass": "^0.7.1",
+    "gulp-size": "^0.3.1",
+    "gulp-uglify": "^0.3.0",
+    "gulp-useref": "^0.4.3",
     "gulp-util": "^2.2.14",
+    "jshint-stylish": "^0.2.0",
     "shelljs": "^0.3.0"
   }
 }
