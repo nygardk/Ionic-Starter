@@ -20,6 +20,8 @@ var ngmin = require('gulp-ngmin');
 var useref = require('gulp-useref');
 var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
+var cache = require('gulp-cache');
+var imagemin = require('gulp-imagemin')
 
 var dirs = {
   src:   './src/',
@@ -82,17 +84,16 @@ gulp.task('lint', function () {
 
 gulp.task('build-images', function () {
   return gulp.src('src/{images,img}/**/*')
-    // .pipe($.cache($.imagemin({
-    //   optimizationLevel: 3,
-    //   progressive: true,
-    //   interlaced: true
-    // })))
+    .pipe(cache(imagemin({
+      optimizationLevel: 3,
+      progressive: true,
+      interlaced: true
+    })))
     .pipe(gulp.dest(dirs.build));
     // .pipe($.size());
 });
 
 gulp.task('temp-fonts', function () {
-  // return bowerFiles()
   return gulp.src('src/bower_components/**/*')
     .pipe(filter('**/*.{eot,svg,ttf,woff}'))
     .pipe(flatten())
@@ -101,8 +102,7 @@ gulp.task('temp-fonts', function () {
 });
 
 gulp.task('build-fonts', function () {
-  // return bowerFiles()
-  return gulp.src('src/bower_components/**/*')
+  return gulp.src('src/bower_components/**/*', 'src/fonts/**/*')
     .pipe(filter('**/*.{eot,svg,ttf,woff}'))
     .pipe(flatten())
     .pipe(gulp.dest(dirs.build + 'fonts'))
@@ -111,8 +111,8 @@ gulp.task('build-fonts', function () {
 
 gulp.task('temp-scripts', function () {
   return gulp.src('src/js/**/*.js')
-    .pipe(ngmin({dynamic: false})) // minify (only own) scripts
-    .pipe(uglify())
+    .pipe(ngmin({dynamic: false})) // ng-minify (only own) scripts
+    // .pipe(uglify()) // uglify all js in build-html
     .pipe(gulp.dest(paths.scripts.dev));
 })
 
@@ -120,10 +120,11 @@ gulp.task('build-html', ['compass-dist', 'temp-scripts'], function () {
   var jsFilter = filter('**/*.js');
   var cssFilter = filter('**/*.css');
 
-  return gulp.src('src/*.html')
+  return gulp.src('src/{./index.html,templates/**/*.html}')
     .pipe(useref.assets({searchPath: '{.tmp,src}'}))
 
     .pipe(jsFilter)
+    .pipe(uglify())
     .pipe(jsFilter.restore())
 
     .pipe(cssFilter)
@@ -137,6 +138,8 @@ gulp.task('build-html', ['compass-dist', 'temp-scripts'], function () {
     .pipe(useref.restore())
     .pipe(useref())
     .pipe(revReplace()) // for rev hash
+    .pipe(useref.restore())
+
     .pipe(gulp.dest(dirs.build))
     .pipe(size());
 });
@@ -173,7 +176,7 @@ gulp.task('server', function () {
   });
 });
 
-gulp.task('serve', ['wiredep', 'server', 'temp-fonts', 'watch'])
+gulp.task('serve', ['wiredep', 'compass-dev', 'server', 'temp-fonts', 'watch'])
 
 // Clean build folder
 gulp.task('clean', function () {
