@@ -176,13 +176,21 @@ gulp.task('server', function () {
   });
 });
 
-gulp.task('serve', ['wiredep', 'compass-dev', 'server', 'temp-fonts', 'watch'])
+gulp.task('serve', ['clean-temp', 'wiredep', 'compass-dev', 'server', 'temp-fonts', 'watch'])
 
 // Clean build folder
-gulp.task('clean', function () {
+gulp.task('clean-temp', function () {
+  return gulp.src('.tmp/*', {read: false})
+    .pipe(clean());
+});
+
+// Clean build folder
+gulp.task('clean-build', function () {
   return gulp.src('www/*', {read: false})
     .pipe(clean());
 });
+
+gulp.task('clean', ['clean-temp', 'clean-build']);
 
 gulp.task('default', ['serve']);
 
@@ -190,7 +198,7 @@ gulp.task('watch', function() {
   gulp.watch(paths.styles.src, ['compass-dev']);
 });
 
-gulp.task('build', ['clean', 'lint'], function () {
+gulp.task('build', ['clean-build', 'lint'], function () {
   gulp.start('build-fonts');
   gulp.start('build-images');
   gulp.start('build-html');
