@@ -102,7 +102,7 @@ gulp.task('temp-fonts', function () {
 });
 
 gulp.task('build-fonts', function () {
-  return gulp.src('src/bower_components/**/*', 'src/fonts/**/*')
+  return gulp.src(['src/bower_components/**/*', 'src/fonts/**/*'])
     .pipe(filter('**/*.{eot,svg,ttf,woff}'))
     .pipe(flatten())
     .pipe(gulp.dest(dirs.build + 'fonts'))
