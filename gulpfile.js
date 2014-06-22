@@ -7,6 +7,7 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var connect = require('gulp-connect');
+var modRewrite = require('connect-modrewrite');
 var compass = require('gulp-compass');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
@@ -172,7 +173,15 @@ gulp.task('server', function () {
   connect.server({
     port: 9000,
     livereload: true,
-    root: ['.tmp', 'src'] // shares primarily from .tmp
+    root: ['.tmp', 'src'], // shares primarily from .tmp
+    middleware: function () {
+      return [
+        // enable AngularJS html5-mode
+        modRewrite([
+          '!\\.html|\\.js|\\.svg|\\.css|\\.png|\\.jpg|\\.jpeg|\\.mp3|\\.ogg|\\.wav$ /index.html [L]'
+        ])
+      ]
+    }
   });
 });
 
