@@ -12,5 +12,10 @@ angular.module('app')
       controller: 'IntroCtrl'
     })
 
+    .state('test', {
+      url: '/test',
+      templateUrl: 'templates/test.html'
+    })
+
   $urlRouterProvider.otherwise('/intro');
 });
